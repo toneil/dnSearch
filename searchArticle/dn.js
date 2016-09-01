@@ -2,6 +2,7 @@ const Promise = require('bluebird');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const _ = require('lodash');
+const { containsWords } = require('../termSearch');
 
 const extractTextFromHtml = html => {
     const $ = cheerio.load(html);
@@ -16,16 +17,6 @@ const extractDateFromHtml = html => {
     const dateString = $('.js-article').attr('data-article-publish-date');
     const yearAndMonth = dateString.substr(0,7)
     return yearAndMonth
-}
-const containsWords = (text, queryGroups) => {
-    const queryMap = {};
-    queryGroups.forEach(group => {
-        queryMap[group.title] = 0;
-        group.terms.forEach(term => {
-            queryMap[group.title] = text.indexOf(term) !== -1 ? 1 : queryMap[group.title]
-        })
-    });
-    return queryMap;
 }
 
 module.exports = (articleUrl, queryGroups) => {
