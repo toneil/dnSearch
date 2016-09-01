@@ -15,7 +15,7 @@ const extractArticlesFromPage = (query, currentPage, lastPage, articleUrls) => n
                 )
             );
         }).then(urls => {
-            console.log(`Got page ${currentPage} of ${lastPage}`);
+            console.error(`Got page ${currentPage} of ${lastPage}`);
             return extractArticlesFromPage(query, currentPage + 1,
                     lastPage, _.concat(urls, articleUrls))
             .then(allArticleUrls => resolve(allArticleUrls))
@@ -26,6 +26,7 @@ const extractArticlesFromPage = (query, currentPage, lastPage, articleUrls) => n
     }
 })
 
-module.exports = (query, maxPages) => {
+module.exports = (query, maxArticles) => {
+    const maxPages = maxArticles / 20;
     return extractArticlesFromPage(query, 1, maxPages)
 }
